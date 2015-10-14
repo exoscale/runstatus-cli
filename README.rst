@@ -8,6 +8,13 @@ Installation
 
 ::
 
+    pip install runstatus-cli
+
+Usage
+-----
+
+::
+
 	Usage: runstatus [OPTIONS] COMMAND [ARGS]...
 
 	Options:
