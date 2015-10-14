@@ -36,7 +36,10 @@ TIMESINCE_CHUNKS = (
 def time_ago(d, now=None):
     if not now:
         now = datetime.utcnow()
-    d = datetime.strptime(d, "%Y-%m-%dT%H:%M:%S.%fZ")
+    try:
+        d = datetime.strptime(d, "%Y-%m-%dT%H:%M:%S.%fZ")
+    except ValueError:
+        d = datetime.strptime(d, "%Y-%m-%dT%H:%M:%SZ")
     delta = now - d
     delta -= timedelta(calendar.leapdays(d.year, now.year))
     since = delta.days * 24 * 60 * 60 + delta.seconds
