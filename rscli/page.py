@@ -80,8 +80,10 @@ class Page:
     def print_summary(self):
         data = self.get()
         click.secho(dot, nl=False, fg=color(data['state']), bold=True)
-        click.secho("https://{subdomain}.runstat.us".format(**data),
-                    underline=True, nl=False)
+        domain = "https://{subdomain}.runstat.us"
+        if data['domain']:
+            domain = 'https://{domain}'
+        click.secho(domain.format(**data), underline=True, nl=False)
         click.secho("\t", nl=False)
         click.secho("[{state}]".format(**data),
                     fg=color(data['state']), bold=True)
