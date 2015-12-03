@@ -75,8 +75,8 @@ def resolve(page, incident, text):
 @main.command()
 @click.option('--title', prompt='Title', type=click.STRING)
 @click.option('--services', prompt='Services (comma-separated list)',
-              type=click.STRING)
-@click.option('--status', prompt=status_prompt,
+              type=click.STRING, required=False)
+@click.option('--status', prompt=status_prompt, default='investigating',
               type=click.Choice(status_choices))
 @click.option('--state', prompt=state_prompt, type=click.Choice(state_choices))
 @click.option('--text', prompt='Text', type=click.STRING)

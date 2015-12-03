@@ -169,7 +169,7 @@ class Page:
 
     def add_incident(self, title, services, text, status, state):
         url = self.base_endpoint + '/incidents'
-        services = [s.strip() for s in services.split(',')]
+        services = [s.strip() for s in services.split(',') if s.strip()]
         response = self.session.post(url, json={
             'services': services,
             'title': title,
