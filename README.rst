@@ -28,3 +28,23 @@ Usage
 	  resolve   Resolve an open incident.
 	  services  Manage services listed on the status page.
 	  update    Update an open incident.
+
+Configuration
+-------------
+
+The runstatus command line client requires a configuration file
+
+Default configuration file: runstatus will look for a configuration
+file in ~/.runstatus
+
+It is also possible to pass a specific configuration file with the
+-c option: runstatus -c <configuration>.conf COMMAND
+
+Parameters
+
+::
+
+        page = your-page-name
+        key = api-key
+        secret = secret-key
+
