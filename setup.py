@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 with open('requirements.txt') as reqs:
     install_requires = [line for line in reqs.read().split('\n') if (

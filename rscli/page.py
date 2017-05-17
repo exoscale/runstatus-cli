@@ -1,11 +1,11 @@
 from __future__ import unicode_literals
-from datetime import datetime, timedelta
 
 import calendar
+import sys
+from datetime import datetime, timedelta
+
 import click
 import requests
-import sys
-
 from exoscale_auth import ExoscaleAuth
 
 if sys.version_info >= (3, 3):
@@ -45,7 +45,7 @@ def time_ago(d, now=None):
     since = delta.days * 24 * 60 * 60 + delta.seconds
     if since <= 0:
         return '0 minutes'
-    for i, (seconds, name) in enumerate(TIMESINCE_CHUNKS):
+    for i, (seconds, name) in enumerate(TIMESINCE_CHUNKS):  # noqa
         count = since // seconds
         if count != 0:
             break
