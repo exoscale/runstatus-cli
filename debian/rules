@@ -1,0 +1,18 @@
+#!/usr/bin/make -f
+export LANG=C.UTF-8
+export LC_ALL=C.UTF-8
+
+DISTRIBUTION := $(shell lsb_release -sc)
+VERSION := $(shell date +%Y%m%d-%H%M%S)
+DEBVERSION := $(VERSION)-0~$(DISTRIBUTION)0
+
+%:
+	dh $@ --with python-virtualenv --no-test --python /usr/bin/python3.6
+
+override_dh_gencontrol:
+	dh_gencontrol -- -v$(DEBVERSION) -Vpython:Version=$(shell python3.6 -c 'import platform; print(platform.python_version())')
+
+export DH_VIRTUALENV_INSTALL_ROOT=/usr/share
+
+override_dh_virtualenv:
+	dh_virtualenv --extra-pip-arg="--no-binary=:all:" --python /usr/bin/python3.6 --no-test --builtin-venv
