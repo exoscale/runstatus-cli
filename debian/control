@@ -11,7 +11,7 @@ Build-Depends: debhelper (>= 9),
                python3.6-venv,
 Standards-Version: 3.9.5
 
-Package: blobtool
+Package: runstatus-cli
 Architecture: amd64
 Pre-Depends: dpkg (>= 1.16.1),
              ${misc:Pre-Depends}
