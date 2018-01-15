@@ -3,8 +3,8 @@ export LANG=C.UTF-8
 export LC_ALL=C.UTF-8
 
 DISTRIBUTION := $(shell lsb_release -sc)
-VERSION := $(shell cat setup.py | sed -n 's/.*version=.\([0-9.]*\).,.*/\1/p')
-DEBVERSION := $(VERSION)-0~$(DISTRIBUTION)1
+VERSION := $(shell cat setup.py | sed -n 's/.*version=.\([0-9.]*\).,.*/\1/p')-$(shell date +%Y.%m.%d-%H%M%S)
+DEBVERSION := $(VERSION)-0~$(DISTRIBUTION)0
 
 %:
 	dh $@ --with python-virtualenv --no-test --python /usr/bin/python3.6
