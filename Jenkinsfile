@@ -35,10 +35,12 @@ node {
 }
 
 def pythonLint() {
-  def python = docker.image('exoscale/python:latest')
-  python.inside("-u root -v /home/exec/.cache:/root/.cache --net=host") {
-    withPythonEnv('python') {
-      pythonLint('rscli')
+  docker.withRegistry('https://infra-img001.gv2.p.exoscale.net') {
+    def python = docker.image('infra-img001.gv2.p.exoscale.net/exoscale/python:latest')
+    python.inside("-u root -v /home/exec/.cache:/root/.cache --net=host") {
+      withPythonEnv('python') {
+        pythonLint('rscli')
+      }
     }
   }
 }
