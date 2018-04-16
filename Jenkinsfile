@@ -35,8 +35,9 @@ node {
 }
 
 def pythonLint() {
-  docker.withRegistry('https://infra-img001.gv2.p.exoscale.net') {
-    def python = docker.image('infra-img001.gv2.p.exoscale.net/exoscale/python:latest')
+  docker.withRegistry('https://registry.internal.exoscale.ch') {
+    def python = docker.image('registry.internal.exoscale.ch/exoscale/python:latest')
+    python.pull()
     python.inside("-u root -v /home/exec/.cache:/root/.cache --net=host") {
       withPythonEnv('python') {
         pythonLint('rscli')
