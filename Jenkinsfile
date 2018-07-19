@@ -39,7 +39,7 @@ def pythonLint() {
     def python = docker.image('registry.internal.exoscale.ch/exoscale/python:latest')
     python.pull()
     python.inside("-u root -v /home/exec/.cache:/root/.cache --net=host") {
-      withPythonEnv('python') {
+      withPythonEnv('python3') {
         pythonLint('rscli')
       }
     }
