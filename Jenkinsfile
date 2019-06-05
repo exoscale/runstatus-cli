@@ -4,33 +4,35 @@ node {
   // Wipe the workspace so we are building completely clean
   cleanWs()
 
-  try {
-    dir('src') {
-      stage('checkout source code') {
-        checkout scm
+  withEnv(['PYTHON_EXECUTABLE=/usr/bin/python3.6']) {
+    try {
+      dir('src') {
+        stage('checkout source code') {
+          checkout scm
+        }
+        updateGithubCommitStatus('PENDING', "${env.WORKSPACE}/src")
+        stage('test') {
+          pythonLint()
+        }
+        stage('build') {
+          gitPbuilder('xenial')
+        }
       }
-      updateGithubCommitStatus('PENDING', "${env.WORKSPACE}/src")
-      stage('test') {
-        pythonLint()
-      }
-      stage('build') {
-        gitPbuilder('xenial')
+      stage('aptly upload') {
+        aptlyBranchUpload('xenial', 'main', 'build-area/*deb')
       }
     }
-    stage('aptly upload') {
-      aptlyBranchUpload('xenial', 'main', 'build-area/*deb')
+    catch (err) {
+      currentBuild.result = 'FAILURE'
+      updateGithubCommitStatus('FAILURE', "${env.WORKSPACE}/src")
+      throw err
     }
-  }
-  catch (err) {
-    currentBuild.result = 'FAILURE'
-    updateGithubCommitStatus('FAILURE', "${env.WORKSPACE}/src")
-    throw err
-  }
-  finally {
-    if (currentBuild.result != 'FAILURE') {
-      updateGithubCommitStatus('SUCCESS', "${env.WORKSPACE}/src")
+    finally {
+      if (currentBuild.result != 'FAILURE') {
+        updateGithubCommitStatus('SUCCESS', "${env.WORKSPACE}/src")
+      }
+      cleanWs cleanWhenFailure: false
     }
-    cleanWs cleanWhenFailure: false
   }
 }
 
@@ -39,9 +41,8 @@ def pythonLint() {
     def python = docker.image('registry.internal.exoscale.ch/exoscale/python:latest')
     python.pull()
     python.inside("-u root -v /home/exec/.cache:/root/.cache --net=host") {
-      withPythonEnv('python3') {
-        pythonLint('rscli')
-      }
+      venv "pip install -U flake8 flake8-bugbear flake8-import-order"
+      venv "flake8 rscli"
     }
   }
 }
