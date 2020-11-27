@@ -4,7 +4,7 @@ node {
   // Wipe the workspace so we are building completely clean
   cleanWs()
 
-  withEnv(['PYTHON_EXECUTABLE=/usr/bin/python3.6']) {
+  withEnv(['PYTHON_EXECUTABLE=/usr/bin/python3']) {
     try {
       dir('src') {
         stage('checkout source code') {
@@ -38,7 +38,7 @@ node {
 
 def pythonLint() {
   docker.withRegistry('https://registry.internal.exoscale.ch') {
-    def python = docker.image('registry.internal.exoscale.ch/exoscale/python:latest')
+    def python = docker.image('registry.internal.exoscale.ch/exoscale/python:build')
     python.pull()
     python.inside("-u root -v /home/exec/.cache:/root/.cache --net=host") {
       venv "pip install -U flake8 flake8-bugbear flake8-import-order"
