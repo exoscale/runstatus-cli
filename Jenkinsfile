@@ -37,8 +37,8 @@ node {
 }
 
 def pythonLint() {
-  docker.withRegistry('https://registry.internal.exoscale.ch') {
-    def python = docker.image('registry.internal.exoscale.ch/exoscale/python:3.8-focal-build')
+  docker.withRegistry("https://${EXOSCALE_DOCKER_REGISTRY}") {
+    def python = docker.image("${EXOSCALE_DOCKER_REGISTRY}/exoscale/python:3.8-focal-build")
     python.pull()
     python.inside("-u root -v /home/exec/.cache:/root/.cache --net=host") {
       venv "pip install -U flake8 flake8-bugbear flake8-import-order"
